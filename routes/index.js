@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var matesEngine = require('./mates-engine-connection')
+var async = require('async')
 var db = require('./database')
 let q = require('q')
 
@@ -36,10 +37,8 @@ router.get('/call', (req, res, next) =>{
     console.log('result catch', err)
     res.send(err)
   })
-
-  
-
 })
+
 
 router.post('/v1/admin/game-config', (req, res, next) => {
   console.log('request', JSON.stringify(req.body))
@@ -47,18 +46,19 @@ router.post('/v1/admin/game-config', (req, res, next) => {
     .then((gameConfigSaved) => res.send(gameConfigSaved))
 })
 
-router.get('/v1/admin/game-config/:id', (req, res, next) => {
+router.get('/v1/admin/game/:id', (req, res, next) => {
   console.log('request', req.params.id)
-
 
   db.getGameConfig(req.params.id)
     .then((gameConfig) => {
-      createGame(gameConfig).then((game) => res.send(game))
+      createGame(gameConfig)
+        .then((game) => res.send(game))
     })
 })
 
 
 function createGame(gameConfig){
+  console.log('creating Game')
   let deferred = q.defer()
 
   let game = {
@@ -66,24 +66,21 @@ function createGame(gameConfig){
     "levels": []
   }
 
-  gameConfig.levels.forEach((level, index, array) =>{
-    console.log('level', index, array.length)
+  async.eachOfSeries(gameConfig.levels, (level, index, callback) =>{
 
-    createGameProblems(level.gameProblems).then((gameProblems) =>{
-      console.log('forEach createGameProblem')
+    createGameProblems(level.gameProblems)
+      .then((gameProblems) =>{
       
       game.levels.push({
         "name" : level.name,
         "gameProblems" : gameProblems,
         "scoreConfig" : level.scoreConfig
       })
-
-      if(index === array.length -1){
-        console.log('resolve')
-        deferred.resolve(game)
-      }
+      callback()
     })
 
+  }, () => {
+    deferred.resolve(game)
   })
 
   return deferred.promise
@@ -94,33 +91,23 @@ function createGameProblems(gameConfigs){
 
   let gameProblems = []
 
-  gameConfigs.forEach((gameConfig, index, array) =>{
-    createGameProblem(gameConfig).then((gameProblem) =>{
-      gameProblems.push(gameProblem)
-      if(index === array.length -1){
-        console.log('resolve gameConfigs')
-        deferred.resolve(gameProblems)
-      }
-    })
+  async.eachOfSeries(gameConfigs, (gameConfig, index, callback) => {
+    console.log('creating game problem ', index)  
+    matesEngine
+      .createProblem(gameConfig)
+      .then(function(gameProblem){
+        console.log('game problem created')
+        gameProblems.push(gameProblem)
+        
+        callback()
+        
+      })
+
+  }, () => {
+    deferred.resolve(gameProblems)
   })
 
   return deferred.promise
-}
-
-
-function createGameProblem(gameConfig){
-  let deferred = q.defer()
-  
-  console.log('createGameProblem', gameConfig)
-
-  if(gameConfig.type === 'simple-problem'){
-    console.log('simple-problem', gameConfig)
-    matesEngine.simpleProblem(gameConfig).then((gameProblem) => {
-      deferred.resolve(gameProblem)
-    })
-  }
-
-  return deferred.promise  
 }
 
 
