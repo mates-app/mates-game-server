@@ -6,39 +6,21 @@ var async = require('async')
 var db = require('./database')
 let q = require('q')
 
+router.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
 
+router.get('/v1/admin/game-config', (req, res, next) => {
+  console.log('enter')
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  
 
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get('/call', (req, res, next) =>{
-
-  var request = {
-    "expression":"(a + b)",
-    "operationConfig":{
-        "probablySign": 0.2,
-        "operationsPattern":"+-/*\\^"
-    },
-    "aritmeticVariableConfig": {
-        "max":10,
-        "min": 0,
-        "probablySign": 0.5,
-        "divisionFactor":2
-    }
-  }
-
-  matesEngine.simpleProblem(request).then((result) =>{
-    console.log('result', result)
-    res.send(result)  
-  }).catch((err)=>{
-    console.log('result catch', err)
-    res.send(err)
-  })
+  db.getAllGameConfigs()
+    .then((gameConfigSaved) => res.send(gameConfigSaved))
 })
-
 
 router.post('/v1/admin/game-config', (req, res, next) => {
   console.log('request', JSON.stringify(req.body))
@@ -97,7 +79,7 @@ function createGameProblems(gameConfigs){
       .createProblem(gameConfig)
       .then(function(gameProblem){
         console.log('game problem created')
-        gameProblems.push(gameProblem)
+        gameProblem.forEach((problem) => gameProblems.push(problem))        
         
         callback()
         

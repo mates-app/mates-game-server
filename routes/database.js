@@ -47,8 +47,24 @@ let getGameConfig = function(id){
 	return deferred.promise
 }
 
+let getAllGameConfigs = () => {
+	let deferred = q.defer()
+
+	GameConfig
+		.find((err, gameConfigs) => {
+		if (err) 
+			console.error(err);    
+		else
+			console.log('games restored', gameConfigs)
+		return deferred.resolve(gameConfigs)
+	})
+
+	return deferred.promise
+}
+
 
 module.exports = {
 	saveGameConfig : saveGameConfig,
-	getGameConfig : getGameConfig
+	getGameConfig : getGameConfig,
+	getAllGameConfigs : getAllGameConfigs
 };
