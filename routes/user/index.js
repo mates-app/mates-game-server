@@ -19,6 +19,13 @@ router.get('/:id',
 	}
 )
 
+router.delete('/:id',
+	User.remove,
+	(req, res, next) => res.send()
+	
+)
+
+
 router.get('/is-available/:username',
 	User.findByUsername,
 	(req, res, next) => {

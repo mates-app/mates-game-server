@@ -68,5 +68,19 @@ module.exports.findById = (req, res, next) => {
 	})
 }
 
+module.exports.remove = (req, res, next) => {
+	let id = req.params.id || req.body.id
+	console.log('id',id)
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+    	return next(new Error('You must supply a User ID'))
+  	}
+
+	User.remove({ _id : id}, (err, doc) =>{
+		if(err) return err		
+		next()
+	})
+}
+
 
 module.exports.findByUsername = findByUsername
