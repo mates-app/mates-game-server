@@ -1,8 +1,6 @@
 'use strict'
 var express = require('express');
 var router = express.Router();
-var async = require('async')
-let q = require('q')
 let User = require('./user.dao')
 
 router.post('/',
@@ -22,9 +20,7 @@ router.get('/:id',
 router.delete('/:id',
 	User.remove,
 	(req, res, next) => res.send()
-	
 )
-
 
 router.get('/is-available/:username',
 	User.findByUsername,
@@ -33,9 +29,5 @@ router.get('/is-available/:username',
 		res.send(req.user === null || req.user === undefined)
 	}
 )
-
-
-
-
 
 module.exports = router;
