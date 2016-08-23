@@ -57,12 +57,12 @@ module.exports.pushScore = (req, res, next) => {
 		if(err) return next(err)
 		
 		if(gameScore !== undefined && gameScore !== null){
-			let score = gameScore.scores.find((score) => score.userId.equals(userId))
+			let score = gameScore.scores.find((score) => score.user.equals(userId))
 			if(score){
 				score.score += scoreToAdd
 			}else{
 				gameScore.scores.push({
-					userId : userId,
+					user : userId,
 					score : scoreToAdd
 				})
 			}
@@ -95,6 +95,9 @@ module.exports.pushScore = (req, res, next) => {
 
 }
 
+
+
+
 module.exports.findByGameId = (req, res, next) => {
 	let gameId = req.params.gameId || req.body.gameId
 	console.log('gameId', gameId, req.params.gameId)
@@ -102,12 +105,15 @@ module.exports.findByGameId = (req, res, next) => {
     	return next(new Error('You must supply a GameScore ID'))
   	}
 
-	GameScore.findOne({gameId : gameId}, (err, gameScore) =>{
-		if(err) return err
-		else req.gameScore = gameScore
-		
-		next()
-	})
+	GameScore
+		.findOne({gameId : gameId})
+		.populate({path : 'scores.user'})
+		.exec((err, gameScore) =>{
+			if(err) return err
+			else req.gameScore = gameScore
+			
+			next()
+		})
 }
 
 module.exports.remove = (req, res, next) => {
