@@ -49,25 +49,49 @@ module.exports.pushScore = (req, res, next) => {
   	}
 
   	let query = { 
-  		gameId : gameId,
-		'scores.userId' : userId
+  		gameId : gameId
+  		// ,'scores.userId' : userId
 	}
 
-  	let update = { 
-  		$inc : {
-  			'scores.$.score' : scoreToAdd
-  		}
-  	}
+	GameScore.findOne(query, (err, gameScore) =>{
+		if(err) return next(err)
+		
+		if(gameScore !== undefined && gameScore !== null){
+			let score = gameScore.scores.find((score) => score.userId.equals(userId))
+			if(score){
+				score.score += scoreToAdd
+			}else{
+				gameScore.scores.push({
+					userId : userId,
+					score : scoreToAdd
+				})
+			}
 
-  	let options = {
-  		upsert : true
-  	}
+			gameScore.save((err) =>{
+				if(err) return next(err)
+				next()
+			})
+		}else{
+			next()
+		}
+	})
 
-  	GameScore.findOneAndUpdate(query, update, options, (err, gameScore) =>{
-  		if(err) return next(err)
-  		req.gameScore = gameScore
-  		next()
-  	})
+	
+  	// let update = { 
+  	// 	$inc : {
+  	// 		'scores.$.score' : scoreToAdd
+  	// 	}
+  	// }
+
+  	// let options = {
+  	// 	upsert : true
+  	// }
+
+  	// GameScore.findOneAndUpdate(query, update, options, (err, gameScore) =>{
+  	// 	if(err) return next(err)
+  	// 	req.gameScore = gameScore
+  	// 	next()
+  	// })
 
 }
 
