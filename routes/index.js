@@ -44,6 +44,7 @@ function createGame(gameConfig){
   let deferred = q.defer()
 
   let game = {
+    "gameId": gameConfig._id,
     "name" : gameConfig.name,
     "levels": []
   }
