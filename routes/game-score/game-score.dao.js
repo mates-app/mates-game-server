@@ -84,23 +84,6 @@ module.exports.pushScore = (req, res, next) => {
 		}
 	})
 
-	
-  	// let update = { 
-  	// 	$inc : {
-  	// 		'scores.$.score' : scoreToAdd
-  	// 	}
-  	// }
-
-  	// let options = {
-  	// 	upsert : true
-  	// }
-
-  	// GameScore.findOneAndUpdate(query, update, options, (err, gameScore) =>{
-  	// 	if(err) return next(err)
-  	// 	req.gameScore = gameScore
-  	// 	next()
-  	// })
-
 }
 
 

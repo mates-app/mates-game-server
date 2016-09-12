@@ -2,7 +2,7 @@
 let mongoose = require('mongoose');
 let models = require('./models')
 let q = require('q')
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/matesGame');
 
 var GameConfig = mongoose.model('GameConfig', models.gameConfig);
 
