@@ -7,7 +7,7 @@ var router = express.Router();
 let q = require('q')
 let GameConfigDao = require('../game-config/game-config.dao')
 let GameMatch = require('../game-match/game-match.dao')
-let GamePlayCreator = require('./game-play.creator')
+let GameInstanceCreator = require('./game-instance.creator')
 
 
 router.get('/:id/:gameMatchId*?',
@@ -17,7 +17,7 @@ router.get('/:id/:gameMatchId*?',
             GameMatch.create(req, res, next) :
             GameMatch.findById(req,res,next)
     },
-    GamePlayCreator.createGame,
+    GameInstanceCreator.createGame,
     (req, res, next) => {
         console.log(req.gameMatch)
         req.game.gameMatchId = req.gameMatch._id

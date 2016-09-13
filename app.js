@@ -9,7 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/user/index');
 var gameMatch = require('./routes/game-match/index')
 var gameConfig = require('./routes/game-config/index')
-var gamePlay = require('./routes/game-play/index')
+var gameInstance = require('./routes/game-instance/index')
 
 //var playerGame = require('./routes/player-game/index')
 var matesEngine = require('./routes/mates-engine-connection');
@@ -41,7 +41,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/game-match', gameMatch);
 app.use('/game-config', gameConfig)
-app.use('/game-play', gamePlay)
+app.use('/game-play', gameInstance)
 //app.use('/users', users);
 //app.use('/player-game', playerGame)
 
