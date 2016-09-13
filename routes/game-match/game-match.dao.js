@@ -1,34 +1,40 @@
 'use strict'
 let mongoose = require('mongoose')
-let GameSettings = require('./game-settings.model')
+let GameMatch = require('./game-match.model')
 
 
 module.exports.create = (req, res, next) =>{
+    let gameId = req.body.gameId || req.params.id
 
-    if (!mongoose.Types.ObjectId.isValid(req.body.gameId)) {
-        return next(new Error('You must supply a GameScore ID'))
+    if (!mongoose.Types.ObjectId.isValid(gameId)) {
+        return next(new Error('You must supply a GameConfig ID'))
     }
 
-    let gameSettings = new GameSettings(req.body)
+    req.body.gameId = gameId
 
-    gameSettings.save((err) => {
+    let gameMatch = new GameMatch(req.body)
+
+    gameMatch.save((err) => {
         if (err) return next(err)
 
-        req.gameSettings = gameSettings
+        req.gameMatch = gameMatch
 
         next()
     })
 }
 
 module.exports.findById = (req, res, next) => {
-    GameSettings.findById(req.params.id, (err, gameSettings) =>{
-        console.info(req.params.id)
+    let gameMatchId = req.params.gameMatchId || req.params.id
+    console.info('gameMatchId',gameMatchId)
+
+    GameMatch.findById(gameMatchId, (err, gameMatch) =>{
+
 
         if(err){
             return next(err)
         }
 
-        req.gameSettings = gameSettings
+        req.gameMatch = gameMatch
 
         next()
 
@@ -42,14 +48,14 @@ module.exports.findPublics = (req, res, next) => {
     }
 
 
-    GameSettings.find(query, (err, gameSettings) =>{
+    GameMatch.find(query, (err, gameMatches) =>{
         console.info(query)
 
         if(err){
             return next(err)
         }
 
-        req.gameSettings = gameSettings
+        req.gameMatches = gameMatches
 
         next()
 
@@ -58,12 +64,12 @@ module.exports.findPublics = (req, res, next) => {
 
 
 module.exports.pushScore = (req, res, next) => {
-    let gameSettingsId = req.body.gameSettingsId
+    let gameMatchId = req.body.gameMatchId
     let userId = req.body.userId
     let scoreToAdd = req.body.scoreToAdd
-    console.log('pushScore', gameSettingsId, userId, scoreToAdd)
+    console.log('pushScore', gameMatchId, userId, scoreToAdd)
 
-    if (!mongoose.Types.ObjectId.isValid(gameSettingsId)) {
+    if (!mongoose.Types.ObjectId.isValid(gameMatchId)) {
         console.log('error gameId')
         return next(new Error('You must supply a GameConfig ID'))
     }
@@ -74,10 +80,10 @@ module.exports.pushScore = (req, res, next) => {
     }
 
     let query = {
-        _id : gameSettingsId
+        _id : gameMatchId
     }
 
-    GameSettings.findOne(gameSettingsId, (err, gameScore) =>{
+    GameMatch.findOne(gameMatchId, (err, gameScore) =>{
 
         if(err) {
             console.log('error finding')

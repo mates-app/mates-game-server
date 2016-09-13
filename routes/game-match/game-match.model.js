@@ -4,19 +4,19 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
-var gameSettingsSchema = {
+var gameMatchSchema = {
     gameId: {type: Schema.Types.ObjectId, ref: 'GameConfig' },
     name : String,
-    isPublic: Boolean,
-    isMultiPlayer: Boolean,
-    isStarted: Boolean,
+    isPublic: {type: Boolean, default: false},
+    isMultiPlayer: {type: Boolean, default: false},
+    isStarted: {type: Boolean, default: false},
     scores: [{
         user: {type: Schema.Types.ObjectId, ref: 'User' },
         score: Number
     }]
 }
 
-module.exports = mongoose.model('GameSettings', gameSettingsSchema)
+module.exports = mongoose.model('GameMatch', gameMatchSchema)
 
 
 

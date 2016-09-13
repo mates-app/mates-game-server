@@ -8,8 +8,9 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/user/index');
 var gameScore = require('./routes/game-score/index');
-var gameSettings = require('./routes/game-settings/index')
+var gameMatch = require('./routes/game-match/index')
 var gameConfig = require('./routes/game-config/index')
+var gamePlay = require('./routes/game-play/index')
 
 //var playerGame = require('./routes/player-game/index')
 var matesEngine = require('./routes/mates-engine-connection');
@@ -40,8 +41,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/game-score', gameScore);
-app.use('/game-settings', gameSettings);
+app.use('/game-match', gameMatch);
 app.use('/game-config', gameConfig)
+app.use('/game-play', gamePlay)
 //app.use('/users', users);
 //app.use('/player-game', playerGame)
 

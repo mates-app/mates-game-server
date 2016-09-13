@@ -1,25 +1,25 @@
 'use strict'
 var express = require('express')
 var router = express.Router()
-let GameSettingsDao = require('./game-settings.dao')
+let GameMatchDao = require('./game-match.dao')
 
 router.post('/',
-	GameSettingsDao.create,
+	GameMatchDao.create,
 	(req, res, next) => res.send(req.gameSettings)
 )
 
 router.get('/:id',
-	GameSettingsDao.findById,
+	GameMatchDao.findById,
 	(req, res, next) => res.send(req.gameSettings)
 )
 
 router.get('/public/:type',
-	GameSettingsDao.findPublics,
+	GameMatchDao.findPublics,
 	(req, res, next) => res.send(req.gameSettings)
 )
 
 router.put('/score',
-	GameSettingsDao.pushScore,
+	GameMatchDao.pushScore,
 	(req, res, next) => res.send(req.gameSettings)
 )
 
