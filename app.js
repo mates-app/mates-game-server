@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/user/index');
 var gameScore = require('./routes/game-score/index');
 var gameSettings = require('./routes/game-settings/index')
+var gameConfig = require('./routes/game-config/index')
 
 //var playerGame = require('./routes/player-game/index')
 var matesEngine = require('./routes/mates-engine-connection');
@@ -22,7 +23,6 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.use(function(req, res, next) {
-  console.log('entering')
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods","GET,PUT,POST,DELETE")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -41,6 +41,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/game-score', gameScore);
 app.use('/game-settings', gameSettings);
+app.use('/game-config', gameConfig)
 //app.use('/users', users);
 //app.use('/player-game', playerGame)
 

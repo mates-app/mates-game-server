@@ -1,11 +1,8 @@
 'use strict'
 let mongoose = require('mongoose');
-let models = require('./models')
 let q = require('q')
 mongoose.connect('mongodb://localhost/matesGame');
-
-var GameConfig = mongoose.model('GameConfig', models.gameConfig);
-
+let GameConfig = require('./game-config/game-config.model')
 let db = mongoose.connection;
 
 db.on(

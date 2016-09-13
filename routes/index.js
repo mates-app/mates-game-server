@@ -12,18 +12,6 @@ router.all('/', function(req, res, next) {
   next();
  });
 
-router.get('/v1/admin/game-config', (req, res, next) => {
-
-  db.getAllGameConfigs()
-    .then((gameConfigSaved) => res.send(gameConfigSaved))
-})
-
-router.post('/v1/admin/game-config', (req, res, next) => {
-  console.log('request', JSON.stringify(req.body))
-  db.saveGameConfig(req.body)
-    .then((gameConfigSaved) => res.send(gameConfigSaved))
-})
-
 router.get('/v1/admin/game/:id', (req, res, next) => {
   console.log('request', req.params.id)
 

@@ -8,7 +8,6 @@ var gameSettingsSchema = {
     gameId: {type: Schema.Types.ObjectId, ref: 'GameConfig' },
     name : String,
     isPublic: Boolean,
-    isSinglePlayer: Boolean,
     isMultiPlayer: Boolean,
     isStarted: Boolean,
     scores: [{

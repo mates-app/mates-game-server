@@ -2,19 +2,6 @@
 var mongoose = require('mongoose')
 var GameScore = require('./game-score.model')
 
-// module.exports.findByGameId = (req, res, next) => {
-
-// 	GameScore.findById(GameScoreId, (err, GameScore) =>{
-// 		if(err != null)
-// 			return next(new Error('You must supply a GameScore ID'))
-// 		else{
-// 			req.GameScore = GameScore
-// 			return next()
-// 		} 			
-// 	})
-
-// }
-
 module.exports.create = (req, res, next) =>{
 
 	if (!mongoose.Types.ObjectId.isValid(req.body.gameId)) {
