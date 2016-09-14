@@ -41,7 +41,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/game-match', gameMatch);
 app.use('/game-config', gameConfig)
-app.use('/game-play', gameInstance)
+app.use('/game-instance', gameInstance)
 //app.use('/users', users);
 //app.use('/player-game', playerGame)
 
