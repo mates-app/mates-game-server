@@ -14,6 +14,8 @@ var gameInstance = require('./routes/game-instance/index')
 //var playerGame = require('./routes/player-game/index')
 var matesEngine = require('./routes/mates-engine-connection');
 var app = express();
+var db = require('./routes/database')
+app.io = require('socket.io')()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,12 +37,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-app.use('/', routes);
+app.use('/', routes(app.io));
 app.use('/users', users);
-app.use('/game-match', gameMatch);
-app.use('/game-config', gameConfig)
+app.use('/game-match', gameMatch(app.io));
+app.use('/game-config', gameConfig(app.io))
 app.use('/game-instance', gameInstance)
 //app.use('/users', users);
 //app.use('/player-game', playerGame)

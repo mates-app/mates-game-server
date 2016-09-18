@@ -63,6 +63,26 @@ module.exports.findPublics = (req, res, next) => {
 }
 
 
+module.exports.start = (req, res, next) => {
+    let gameMatchId = req.body.gameMatchId
+
+    if (!mongoose.Types.ObjectId.isValid(gameMatchId)) {
+        console.log('error gameId')
+        return next(new Error('You must supply a GameMatch ID'))
+    }
+
+    GameMatch.update(
+        {_id : gameMatchId}, 
+        { $set : { 'isStarted' : true}},
+        (err, gameMatch) =>{
+            if(err) return next(err)
+
+            req.gameMatch = gameMatch
+            next()
+        })
+}
+
+
 module.exports.pushScore = (req, res, next) => {
     let gameMatchId = req.body.gameMatchId
     let userId = req.body.userId
@@ -71,7 +91,7 @@ module.exports.pushScore = (req, res, next) => {
 
     if (!mongoose.Types.ObjectId.isValid(gameMatchId)) {
         console.log('error gameId')
-        return next(new Error('You must supply a GameConfig ID'))
+        return next(new Error('You must supply a GameMatch ID'))
     }
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -111,9 +131,7 @@ module.exports.pushScore = (req, res, next) => {
         }else{
             next()
         }
-
     })
-
 
 }
 
