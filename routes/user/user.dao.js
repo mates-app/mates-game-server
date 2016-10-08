@@ -4,7 +4,7 @@ var User = require('./user.model')
 
 module.exports.findById = (req, res, next) => {
 	var userId = req.params.id || req.body.userId
-	
+
 	if (!mongoose.Types.ObjectId.isValid(userId)) {
 	  return next(new Error('You must supply a User ID'))
 	}
@@ -15,7 +15,7 @@ module.exports.findById = (req, res, next) => {
 		else{
 			req.user = user
 			return next()
-		} 			
+		}
 	})
 
 }
@@ -26,9 +26,9 @@ let findByUsername = (req, res, next) =>{
 	User.findOne({'username': username}, (err, user) =>{
 		if(err) return err
 		else req.user = user
-		
+
 		next()
-	}) 
+	})
 }
 
 module.exports.create = (req, res, next) =>{
@@ -48,7 +48,7 @@ module.exports.create = (req, res, next) =>{
 		    req.user = user
 
 		    next()
-	  	})	
+	  	})
 	}
 }
 
@@ -63,7 +63,7 @@ module.exports.findById = (req, res, next) => {
 	User.findById(id, (err, user) =>{
 		if(err) return err
 		else req.user = user
-		
+
 		next()
 	})
 }
@@ -77,7 +77,7 @@ module.exports.remove = (req, res, next) => {
   	}
 
 	User.remove({ _id : id}, (err, doc) =>{
-		if(err) return err		
+		if(err) return err
 		next()
 	})
 }

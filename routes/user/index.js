@@ -5,7 +5,7 @@ let User = require('./user.dao')
 
 router.post('/',
 	User.findByUsername,
-	User.create,	
+	User.create,
 	(req, res, next) => res.send(req.user)
 )
 
@@ -29,5 +29,14 @@ router.get('/is-available/:username',
 		res.send(req.user === null || req.user === undefined)
 	}
 )
+
+router.get('/is-valid/:username',
+	User.findByUsername,
+	(req, res, next) => {
+		console.log(req.user)
+		res.send(req.user !== null && req.user !== undefined)
+	}
+)
+
 
 module.exports = router;
