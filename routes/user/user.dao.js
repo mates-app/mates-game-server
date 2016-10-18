@@ -31,6 +31,20 @@ let findByUsername = (req, res, next) =>{
 	})
 }
 
+module.exports.findByUsernameLike = (req, res, next) =>{
+	let username = req.params.username || req.body.username || req.query.username
+	console.log(username)
+	let re = new RegExp(username, 'i');
+	console.log(re);
+
+	User.find({'username': re}, (err, users) =>{
+		if(err) return err
+		else req.users = users
+
+		next()
+	}) 
+}
+
 module.exports.create = (req, res, next) =>{
 
 	if(req.user){

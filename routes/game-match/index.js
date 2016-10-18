@@ -26,9 +26,16 @@ module.exports = (io) => {
 	})
 
 	
+
+	
 	router.post('/',
 		GameMatchDao.create,
 		(req, res, next) => res.send(req.gameMatch)
+	)
+
+	router.get('/by-name-fragment', 
+		GameMatchDao.findByNameFragment,
+		(req, res, next) => res.send(req.gameMatches)
 	)
 
 	router.get('/:id',

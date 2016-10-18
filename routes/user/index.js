@@ -9,6 +9,14 @@ router.post('/',
 	(req, res, next) => res.send(req.user)
 )
 
+
+router.get('/by-username-fragment',
+	User.findByUsernameLike,
+	(req, res, next) =>{
+		res.send(req.users);
+	}
+)
+
 router.get('/:id',
 	User.findById,
 	(req, res, next) => {
@@ -16,6 +24,7 @@ router.get('/:id',
 		res.send(req.user)
 	}
 )
+
 
 router.delete('/:id',
 	User.remove,
