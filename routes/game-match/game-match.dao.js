@@ -44,10 +44,12 @@ module.exports.findById = (req, res, next) => {
 module.exports.findByNameFragment = (req, res, next) => {
     let nameFragment = req.params.name || req.query.name
     let re = new RegExp(nameFragment, 'i');
+    console.log('findByNameFragment')
     GameMatch.find({name : re}, (err, gameMatches) =>{
         
         if(err) return next(err)
         req.gameMatches = gameMatches
+        console.log(gameMatches)
         next()
 
     })

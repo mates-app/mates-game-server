@@ -15,6 +15,9 @@ var gameInstance = require('./routes/game-instance/index')
 var matesEngine = require('./routes/mates-engine-connection');
 var app = express();
 var db = require('./routes/database')
+
+db.connect(process.argv[2] || 'matesGame')
+
 app.io = require('socket.io')()
 
 // view engine setup

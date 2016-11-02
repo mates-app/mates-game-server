@@ -1,18 +1,27 @@
 'use strict'
 let mongoose = require('mongoose');
 let q = require('q')
-mongoose.connect('mongodb://localhost/matesGame');
-let GameConfig = require('./game-config/game-config.model')
-let db = mongoose.connection;
 
-db.on(
-	'error', 
-	console.error.bind(console, 'connection error:')
-);
 
-db.once('open', function() {
-  console.log('connected to database')
-});
+
+let connect = (database) =>{
+	let connectionString = `mongodb://localhost/${database || 'matesGame'}`
+
+	mongoose.connect(connectionString);
+	let GameConfig = require('./game-config/game-config.model')
+	let db = mongoose.connection;
+
+	db.on(
+		'error', 
+		console.error.bind(console, 'connection error:')
+	);
+
+	db.once('open', function() {
+		console.log(`connected to database ${connectionString}`)
+	});
+
+}
+
 
 let saveGameConfig = function(gameConfig){
 	let deferred = q.defer()
@@ -61,7 +70,8 @@ let getAllGameConfigs = () => {
 
 
 module.exports = {
-	saveGameConfig : saveGameConfig,
-	getGameConfig : getGameConfig,
-	getAllGameConfigs : getAllGameConfigs
+	saveGameConfig 		: saveGameConfig,
+	getGameConfig 		: getGameConfig,
+	getAllGameConfigs 	: getAllGameConfigs,
+	connect 			: connect
 };
