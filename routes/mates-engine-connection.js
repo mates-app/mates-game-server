@@ -2,31 +2,33 @@
 
 var request = require('request')
 var q = require('q')
+let matesLib = require('../lib/models/models')
 
 
 let createProblem = function(req){
 	var deferred = q.defer()
-	console.log(req.type)
-	request.post( { 
-	    uri: getUrlByType(req.type),
-	    json: true,
-	    headers: {
-	     'Content-Type' : 'application/json',
-	    },
-	    body: req
-	},	
+	try{
+		console.log('req.operationConfig.operations',req.operationConfig.operations)
+		let builder = new matesLib.SimpleProblemBuilder(
+			req.constants, 
+			new matesLib.NumberConfig(
+				req.numberConfig.min, 
+				req.numberConfig.max, 
+				req.numberConfig.probablySign, 
+				req.numberConfig.divisors), 
+			new matesLib.OperationConfig(req.operationConfig.operations))
+		let gameProblems = []
 
-	function (error, res2, object) {
-	    if (error) { 
-	     	deferred.resolve(res2.body)
-	    }
-	    else if (res2.statusCode != 200 ) {
-		    deferred.resolve(res2.body)
-	    }else{
-	      	deferred.resolve(res2.body)
-	    }	    
-	})
+		for(let i = 0; i < req.repetitions; i++){
+			gameProblems.push(builder.build())
+		}
 
+		deferred.resolve(gameProblems)
+	
+	}catch(err){
+		console.error(err)
+		throw(new Error(err))
+	}
 		
 	return deferred.promise	
 }

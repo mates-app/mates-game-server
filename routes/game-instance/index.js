@@ -19,12 +19,19 @@ router.get('/:id/:gameMatchId*?',
     },
     GameInstanceCreator.createGame,
     (req, res, next) => {
-        console.log(req.gameMatch)
         req.game.gameMatchId = req.gameMatch._id
         res.send(req.game)
 })
 
-
+router.post('/', 
+    (req,res,next) => {
+        req.gameConfig = req.body  
+        next()  
+    },
+    GameInstanceCreator.createGame, 
+    (req,res,next) => {
+        res.send(req.game)
+    })
 
 
 

@@ -7,8 +7,6 @@ var async = require('async')
 var matesEngine = require('../mates-engine-connection')
 
 module.exports.createGame = (req, res, next) => {
-    console.log('creating Game')
-
     let gameConfig = req.gameConfig
 
     let game = {
@@ -18,10 +16,8 @@ module.exports.createGame = (req, res, next) => {
     }
 
     async.eachOfSeries(gameConfig.levels, (level, index, callback) =>{
-
         createGameProblems(level.gameProblems)
             .then((gameProblems) =>{
-
                 game.levels.push({
                     "name" : level.name,
                     "gameProblems" : gameProblems,
@@ -39,21 +35,16 @@ module.exports.createGame = (req, res, next) => {
 
 let createGameProblems = (gameConfigs) =>{
     let deferred = q.defer()
-
     let gameProblems = []
-
+    console.log('createGameProblems')
     async.eachOfSeries(gameConfigs, (gameConfig, index, callback) => {
-        console.log('creating game problem ', index)
         matesEngine
             .createProblem(gameConfig)
             .then(function(gameProblem){
-                console.log('game problem created')
+                console.log('problemCreated', gameProblem)
                 gameProblem.forEach((problem) => gameProblems.push(problem))
-
                 callback()
-
             })
-
     }, () => {
         deferred.resolve(gameProblems)
     })
