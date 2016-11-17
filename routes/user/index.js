@@ -43,7 +43,11 @@ router.get('/is-valid/:username',
 	User.findByUsername,
 	(req, res, next) => {
 		console.log(req.user)
-		res.send(req.user !== null && req.user !== undefined)
+		let result = {
+			valid: req.user !== null && req.user !== undefined,
+			user : req.user 
+		}
+		res.send(result)
 	}
 )
 
