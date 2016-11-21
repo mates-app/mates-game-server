@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@angular/material": "^2.0.0-alpha.9-experimental-pizza",
     "async": "^2.0.1",
     "body-parser": "~1.15.1",
     "chai": "^3.5.0",

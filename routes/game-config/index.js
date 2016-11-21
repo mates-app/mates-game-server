@@ -14,6 +14,11 @@ module.exports = (io) =>{
         GameConfigDao.create,
         (req, res, next) => res.send(req.gameConfig)
     )
+    
+    router.get('/name-matching/:name',
+        GameConfigDao.findByNameMatching,
+        (req, res, next) => res.send(req.gameConfigs)
+    )
 
     router.get('/:id',
         GameConfigDao.findById,
@@ -29,7 +34,6 @@ module.exports = (io) =>{
             })
             res.send(req.gameConfigs)
         }
-
     )
 
     return router

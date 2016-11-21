@@ -36,15 +36,27 @@ module.exports.findById = (req, res, next) =>{
 
 
 module.exports.findPublics = (req, res, next) => {
-
     GameConfig.find({ isPublic : true }, (err, gameConfigs) =>{
         if(err){
             return next(err)
         }
-
         req.gameConfigs = gameConfigs
-
         next()
     })
-
 }
+
+let findByNameMatching = (req, res, next) =>{
+    let nameFragment = req.params.name || req.query.name
+    let re = new RegExp(nameFragment, 'i');
+
+    GameConfig.find({name : re}, (err, gameConfigs) =>{
+        
+        if(err) 
+            return next(err)
+        req.gameConfigs = gameConfigs
+        next()
+
+    })
+}
+    
+module.exports.findByNameMatching = findByNameMatching
