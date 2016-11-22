@@ -12,22 +12,17 @@ module.exports = (io) => {
 			console.log('socket connected', '/socket/')
 			socket.on('news', (msg) => {
 				console.log(msg)
-			})
-		
+			})	
 			socket.on('other', (msg) => {
 				console.log(msg)
 			})
-		
-		})
+		})	
 
 		io.emit('news', 'news hola')
 		io.emit('connect', 'hola')
 		res.send('ok')
 	})
 
-	
-
-	
 	router.post('/',
 		GameMatchDao.create,
 		(req, res, next) => res.send(req.gameMatch)
@@ -37,6 +32,13 @@ module.exports = (io) => {
 		GameMatchDao.findByNameFragment,
 		(req, res, next) => res.send(req.gameMatches)
 	)
+
+	router.get('/exists/:name',
+		GameMatchDao.findByName,
+		(req, res, next) => {
+			console.log(req.gameMatch)
+			res.send(req.gameMatch !== undefined && req.gameMatch !== null)
+		})
 
 	router.get('/:id',
 		GameMatchDao.findById,
