@@ -10,6 +10,8 @@ var gameMatchSchema = {
     isPublic: {type: Boolean, default: false},
     isMultiPlayer: {type: Boolean, default: false},
     isStarted: {type: Boolean, default: false},
+    users: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    author: {type: Schema.Types.ObjectId, ref: 'User'},
     scores: [{
         user: {type: Schema.Types.ObjectId, ref: 'User' },
         score: Number
