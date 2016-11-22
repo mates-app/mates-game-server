@@ -51,18 +51,23 @@ module.exports.findByNameFragment = (req, res, next) => {
         req.gameMatches = gameMatches
         console.log(gameMatches)
         next()
-
     })
 }
 
+module.exports.findByName = (req, res, next) => {
+    let name = req.params.name || req.query.name
+
+    GameMatch.findOne({name : name}, (err, gameMatch) =>{        
+        if(err) return next(err)
+        req.gameMatch = gameMatch
+        next()
+    })
+}
 
 module.exports.findPublics = (req, res, next) => {
-
     let query = {
         isMultiPlayer: req.params.type === 'multi-player'
     }
-
-
     GameMatch.find(query, (err, gameMatches) =>{
         console.info(query)
 
