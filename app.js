@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/user/index');
 var gameMatch = require('./routes/game-match/index')
 var gameConfig = require('./routes/game-config/index')
 var gameInstance = require('./routes/game-instance/index')
@@ -41,12 +40,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes(app.io));
-app.use('/users', users);
 app.use('/game-match', gameMatch(app.io));
 app.use('/game-config', gameConfig(app.io))
 app.use('/game-instance', gameInstance)
-//app.use('/users', users);
-//app.use('/player-game', playerGame)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
