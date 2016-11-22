@@ -12,13 +12,13 @@ module.exports = (io) => {
 			console.log('socket connected', '/socket/')
 			socket.on('news', (msg) => {
 				console.log(msg)
-			})
-		
+			})	
 			socket.on('other', (msg) => {
 				console.log(msg)
 			})
-		
 		})	
+
+		io.emit('news', 'news hola')
 		io.emit('connect', 'hola')
 		res.send('ok')
 	})
@@ -56,15 +56,19 @@ module.exports = (io) => {
 	)
 
 	router.put('/join', (req, res, next) => {
-		console.log(req.body.gameMatchId)
-		io.emit(req.body.gameMatchId, { 'join' : req.body.user })
-		
+		io.emit(req.body.gameMatchId, {
+			'type'   : 'join',
+			'joined' : req.body.user 
+		})		
 		res.send('ok')
 	})
 
 	router.put('/start',
 		GameMatchDao.start,
-		(req, res, next) => res.send(req.gameMatch)
+		(req, res, next) => {
+			io.emit(req.body.gameMatchId, { 'type' : 'start' })
+			res.send(req.gameMatch)
+		}
 	)
 
 	

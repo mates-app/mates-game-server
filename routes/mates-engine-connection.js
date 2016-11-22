@@ -8,7 +8,6 @@ let matesLib = require('../lib/models/models')
 let createProblem = function(req){
 	var deferred = q.defer()
 	try{
-		console.log('req.operationConfig.operations',req.operationConfig.operations)
 		let builder = new matesLib.SimpleProblemBuilder(
 			req.constants, 
 			new matesLib.NumberConfig(

@@ -36,12 +36,10 @@ module.exports.createGame = (req, res, next) => {
 let createGameProblems = (gameConfigs) =>{
     let deferred = q.defer()
     let gameProblems = []
-    console.log('createGameProblems')
     async.eachOfSeries(gameConfigs, (gameConfig, index, callback) => {
         matesEngine
             .createProblem(gameConfig)
             .then(function(gameProblem){
-                console.log('problemCreated', gameProblem)
                 gameProblem.forEach((problem) => gameProblems.push(problem))
                 callback()
             })
