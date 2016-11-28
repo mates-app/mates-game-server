@@ -28,6 +28,11 @@ module.exports = (io) => {
 		(req, res, next) => res.send(req.gameMatch)
 	)
 
+	router.get('/name-matching/:id?', 
+		GameMatchDao.findByNameMatching,
+		(req, res, next) => res.send(req.gameMatches)
+	)
+
 	router.get('/by-name-fragment', 
 		GameMatchDao.findByNameFragment,
 		(req, res, next) => res.send(req.gameMatches)

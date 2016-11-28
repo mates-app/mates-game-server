@@ -1,7 +1,7 @@
 'use strict'
 let mongoose = require('mongoose');
 let q = require('q')
-
+mongoose.Promise = q.Promise
 
 
 let connect = (database) =>{
